@@ -4,7 +4,6 @@ import random
 import requests
 from dotenv import load_dotenv
 from urllib.parse import urlsplit, unquote
-from pathlib import PurePath
 
 
 FIRST_COMICS = 1
@@ -27,20 +26,26 @@ def download_image(url, path, params=None):
         file.write(response.content)
 
 
+def get_comics_information(url_template):
+    response = requests.get(url_template)
+    response.raise_for_status()
+    comics_information = response.json()
+    return comics_information
+
+
 def main():
+    load_dotenv()
+    bot = telegram.Bot(token=os.environ['BOT_TG_TOKEN'])
     comics_number = random.randint(FIRST_COMICS, LAST_COMICS)
     url_template = 'https://xkcd.com/{}/info.0.json'.format(comics_number)
     directory_name = 'comics'
     os.makedirs(directory_name, exist_ok=True)
-    response = requests.get(url_template)
-    response.raise_for_status()
-    image_url = response.json()['img']
-    author_comment = response.json()['alt']
+    comics_information = get_comics_information(url_template)
+    image_url = comics_information['img']
+    author_comment = comics_information['alt']
     file_name = get_file_name(image_url)
     download_image(image_url, directory_name)
     file_path = os.path.join(directory_name, file_name)
-    load_dotenv()
-    bot = telegram.Bot(token=os.environ['BOT_TG_TOKEN'])
     chat_id = bot.get_updates()[-1].message.chat_id
     try:
         with open(file_path, 'rb') as file:
