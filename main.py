@@ -21,7 +21,6 @@ def get_file_name(file_link):
 def download_image(url, path, params=None):
     response = requests.get(url, params=params)
     response.raise_for_status()
-    os.makedirs(path, exist_ok=True)
     path_template = f'{path}/{get_file_name(url)}'
     with open(path_template, 'wb') as file:
         file.write(response.content)
@@ -31,6 +30,7 @@ def main():
     comics_number = random.randint(FIRST_COMICS, LAST_COMICS)
     url_template = 'https://xkcd.com/{}/info.0.json'.format(comics_number)
     directory_name = 'comics'
+    os.makedirs(directory_name, exist_ok=True)
     response = requests.get(url_template)
     response.raise_for_status()
     image_url = response.json()['img']
