@@ -4,6 +4,7 @@ import random
 import requests
 from dotenv import load_dotenv
 from urllib.parse import urlsplit, unquote
+from pathlib import PurePath
 
 
 FIRST_COMICS = 1
@@ -21,7 +22,7 @@ def get_file_name(file_link):
 def download_image(url, path, params=None):
     response = requests.get(url, params=params)
     response.raise_for_status()
-    path_template = f'{path}/{get_file_name(url)}'
+    path_template = os.path.join(path, get_file_name(url))
     with open(path_template, 'wb') as file:
         file.write(response.content)
 
@@ -37,7 +38,7 @@ def main():
     author_comment = response.json()['alt']
     file_name = get_file_name(image_url)
     download_image(image_url, directory_name)
-    file_path = f'{directory_name}\{file_name}'
+    file_path = os.path.join(directory_name, file_name)
     load_dotenv()
     bot = telegram.Bot(token=os.environ['BOT_TG_TOKEN'])
     chat_id = bot.get_updates()[-1].message.chat_id
