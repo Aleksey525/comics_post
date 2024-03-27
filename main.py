@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 from urllib.parse import urlsplit, unquote
 
 
+FIRST_COMICS = 1
+LAST_COMICS = 2911
+
+
 def get_file_name(file_link):
     splited_link = urlsplit(file_link)
     file_path = unquote(splited_link.path)
@@ -24,7 +28,7 @@ def image_download_with_params(url, path, params=None):
 
 
 def main():
-    number = random.randint(1, 2911)
+    number = random.randint(FIRST_COMICS, LAST_COMICS)
     url_template = 'https://xkcd.com/{}/info.0.json'.format(number)
     directory_name = 'comics'
     response = requests.get(url_template)
