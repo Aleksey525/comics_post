@@ -45,11 +45,10 @@ def main():
         with open(file_path, 'rb') as file:
             bot.send_message(chat_id=chat_id, text=f'{author_comment}')
             bot.send_document(chat_id=chat_id, document=file)
-        os.remove(file_path)
     except telegram.error.NetworkError:
         print('Программа завершена')
-    except OSError:
-        print('Файл не найден')
+    finally:
+        os.remove(file_path)
 
 
 if __name__ == '__main__':
