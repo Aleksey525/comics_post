@@ -35,7 +35,7 @@ def main():
     image_download_with_params(image_url, directory_name)
     file_path = f'{directory_name}\{file_name}'
     load_dotenv()
-    bot = telegram.Bot(token=os.environ['BOT_TOKEN'])
+    bot = telegram.Bot(token=os.environ['BOT_TG_TOKEN'])
     chat_id = bot.get_updates()[-1].message.chat_id
     try:
         with open(file_path, 'rb') as file:
