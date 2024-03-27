@@ -18,7 +18,7 @@ def get_file_name(file_link):
     return file_name
 
 
-def image_download_with_params(url, path, params=None):
+def download_image(url, path, params=None):
     response = requests.get(url, params=params)
     response.raise_for_status()
     os.makedirs(path, exist_ok=True)
@@ -36,7 +36,7 @@ def main():
     image_url = response.json()['img']
     author_comment = response.json()['alt']
     file_name = get_file_name(image_url)
-    image_download_with_params(image_url, directory_name)
+    download_image(image_url, directory_name)
     file_path = f'{directory_name}\{file_name}'
     load_dotenv()
     bot = telegram.Bot(token=os.environ['BOT_TG_TOKEN'])
