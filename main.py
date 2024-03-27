@@ -28,8 +28,8 @@ def image_download_with_params(url, path, params=None):
 
 
 def main():
-    number = random.randint(FIRST_COMICS, LAST_COMICS)
-    url_template = 'https://xkcd.com/{}/info.0.json'.format(number)
+    comics_number = random.randint(FIRST_COMICS, LAST_COMICS)
+    url_template = 'https://xkcd.com/{}/info.0.json'.format(comics_number)
     directory_name = 'comics'
     response = requests.get(url_template)
     response.raise_for_status()
